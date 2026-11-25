@@ -388,7 +388,7 @@
   <a class="fc-call" href="tel:+919649347222" aria-label="Call Movexa"><i class="bi bi-telephone" aria-hidden="true"></i></a>
 </div>
 <div class="modal fade quote-modal" id="quoteModal" tabindex="-1" aria-labelledby="quoteModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen-sm-down">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="row g-0 h-100">
@@ -418,34 +418,34 @@
             <form class="js-enquiry qm-form" id="popupQuote" novalidate data-demo>
               <input type="hidden" name="source" id="pq-source" value="">
               <div class="row g-3">
-                <div class="col-sm-6">
+                <div class="col-6">
                   <label class="form-label" for="pq-name">Full name</label>
                   <input class="form-control" id="pq-name" name="name" placeholder="Your name" autocomplete="name" required>
                   <div class="invalid-feedback">Enter your name.</div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-6">
                   <label class="form-label" for="pq-mobile">Mobile number</label>
                   <div class="input-group has-validation">
                     <span class="input-group-text">+91</span>
-                    <input class="form-control" type="tel" id="pq-mobile" name="mobile" placeholder="10-digit mobile" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" autocomplete="tel-national" required>
-                    <div class="invalid-feedback">Enter a valid 10-digit mobile number.</div>
+                    <input class="form-control" type="tel" id="pq-mobile" name="mobile" placeholder="10 digits" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" autocomplete="tel-national" required>
+                    <div class="invalid-feedback">Enter a valid mobile.</div>
                   </div>
                 </div>
-                <div class="col-sm-6 quote-only">
+                <div class="col-6 quote-only">
                   <label class="form-label" for="pq-from">Moving from</label>
-                  <input class="form-control" id="pq-from" name="from" placeholder="City or PIN code" required>
-                  <div class="invalid-feedback">Enter a pickup city or PIN code.</div>
+                  <input class="form-control" id="pq-from" name="from" placeholder="City / PIN" required>
+                  <div class="invalid-feedback">Enter pickup city.</div>
                 </div>
-                <div class="col-sm-6 quote-only">
+                <div class="col-6 quote-only">
                   <label class="form-label" for="pq-to">Moving to</label>
-                  <input class="form-control" id="pq-to" name="to" placeholder="City or PIN code" required>
-                  <div class="invalid-feedback">Enter a destination city or PIN code.</div>
+                  <input class="form-control" id="pq-to" name="to" placeholder="City / PIN" required>
+                  <div class="invalid-feedback">Enter destination.</div>
                 </div>
-                <div class="col-sm-6 quote-only">
+                <div class="col-6 quote-only">
                   <label class="form-label" for="pq-service">Service</label>
-                  <select class="form-select" id="pq-service" name="service"><option value="">Select a service</option><option value="Home shifting">Home shifting</option><option value="Office relocation">Office relocation</option><option value="Industrial relocation">Industrial relocation</option><option value="Car &amp; bike transport">Car &amp; bike transport</option><option value="Car transportation">Car transportation</option><option value="Bike transportation">Bike transportation</option><option value="Packing &amp; unpacking">Packing &amp; unpacking</option><option value="Loading &amp; unloading">Loading &amp; unloading</option><option value="Warehousing &amp; storage">Warehousing &amp; storage</option><option value="Transfer bills &amp; documents">Transfer bills &amp; documents</option></select>
+                  <select class="form-select" id="pq-service" name="service"><option value="">Select</option><option value="Home shifting">Home shifting</option><option value="Office relocation">Office relocation</option><option value="Industrial relocation">Industrial relocation</option><option value="Car &amp; bike transport">Car &amp; bike transport</option><option value="Car transportation">Car transportation</option><option value="Bike transportation">Bike transportation</option><option value="Packing &amp; unpacking">Packing &amp; unpacking</option><option value="Loading &amp; unloading">Loading &amp; unloading</option><option value="Warehousing &amp; storage">Warehousing &amp; storage</option><option value="Transfer bills &amp; documents">Transfer bills &amp; documents</option></select>
                 </div>
-                <div class="col-sm-6 quote-only">
+                <div class="col-6 quote-only">
                   <label class="form-label" for="pq-date">Move date</label>
                   <input class="form-control" type="date" id="pq-date" name="date">
                 </div>

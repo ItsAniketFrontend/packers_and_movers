@@ -866,9 +866,32 @@ a.card-mx, .card-mx.is-link { color: inherit; text-decoration: none; }
 .qm-form .callback-only { display: none; }
 .qm-form.is-callback .callback-only { display: block; }
 .qm-form.is-callback .quote-only { display: none; }
+/* Tablets: no photo panel, so use a narrower dialog */
+@media (max-width: 991.98px) {
+  .quote-modal .modal-dialog { max-width: 520px; }
+  .quote-modal .modal-content { border-top: 4px solid var(--mx-red); }
+}
+/* Phones: compact card instead of a full-screen form */
 @media (max-width: 575.98px) {
-  .quote-modal .modal-content { border-radius: 0; }
-  .qm-body { padding: 3.25rem 1.25rem 1.5rem; }
+  .quote-modal .modal-dialog { margin: .75rem; max-width: none; min-height: calc(100% - 1.5rem); }
+  .quote-modal .modal-content { border-radius: 16px; max-height: calc(100dvh - 1.5rem); overflow-y: auto; overscroll-behavior: contain; }
+  .quote-modal .btn-close { top: .7rem; right: .7rem; padding: .45rem; background-size: .7em; box-shadow: none; background-color: var(--mx-bg); }
+  .qm-body { padding: 1.1rem 1rem 1rem; }
+  .qm-body .eyebrow { font-size: .66rem; margin-bottom: .3rem; }
+  .qm-body .eyebrow::before { width: 14px; }
+  .qm-body h2 { font-size: 1.22rem; margin-bottom: .2rem; padding-right: 2.2rem; }
+  .qm-body .form-sub { font-size: .8rem; margin-bottom: .8rem; line-height: 1.4; }
+  .qm-form .row { --bs-gutter-x: .55rem; --bs-gutter-y: .6rem; }
+  .qm-form .form-label { font-size: .7rem; margin-bottom: .2rem; }
+  /* 16px stops iOS Safari zooming in when a field is tapped */
+  .qm-form .form-control, .qm-form .form-select { font-size: 16px; padding: .42rem .6rem; border-radius: 7px; }
+  .qm-form .form-select { padding-right: 1.9rem; background-position: right .5rem center; }
+  .qm-form .input-group-text { padding: .42rem .45rem; font-size: .82rem; }
+  .qm-form textarea.form-control { min-height: 76px; }
+  .qm-form .invalid-feedback { font-size: .72rem; }
+  .qm-form .btn { margin-top: .9rem !important; --bs-btn-padding-y: .62rem; --bs-btn-font-size: .92rem; }
+  .qm-form .form-note { font-size: .68rem; margin-top: .45rem; line-height: 1.35; }
+  .qm-form .form-success { font-size: .82rem; padding: .65rem .8rem; }
 }
 
 /* Floating quote button (mobile) */
