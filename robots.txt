@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /Desktop/
+Disallow: /WebP-2x/
+
+Sitemap: https://www.movexalogistics.in/sitemap.xml
