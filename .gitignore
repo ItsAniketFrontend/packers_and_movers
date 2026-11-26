@@ -10,6 +10,9 @@ WebP-2x/
 # Old logo (replaced by "Movexa Logistics Logo.png")
 website_logo.png
 
+# Original team photo (the site uses the optimised copies in assets/images/team/)
+assets/MOVEXA Crew Loading an Open Truck.png
+
 # Archives / backups
 *.zip
 *.rar
