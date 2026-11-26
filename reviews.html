@@ -102,8 +102,8 @@
       <h2 id="fb-title">Share your experience</h2>
       <div class="row g-3 align-items-end">
         <div class="col-md-4"><label class="form-label" for="fb-name">Your name</label><input class="form-control" id="fb-name" name="name" placeholder="Full name" required><div class="invalid-feedback">Enter your name.</div></div>
-        <div class="col-md-5"><label class="form-label" for="fb-text">Your feedback</label><input class="form-control" id="fb-text" name="feedback" placeholder="Tell us about your move" required><div class="invalid-feedback">Add a few words about your move.</div></div>
-        <div class="col-md-3"><button class="btn btn-ink w-100" type="submit">Send feedback <i class="bi bi-arrow-right" aria-hidden="true"></i></button></div>
+        <div class="col-md-8"><label class="form-label" for="fb-text">Your feedback</label><input class="form-control" id="fb-text" name="feedback" placeholder="Tell us about your move" required><div class="invalid-feedback">Add a few words about your move.</div></div>
+        <div class="col-12"><div class="send-options"><button class="btn btn-wa" type="submit" name="via" value="whatsapp"><i class="bi bi-whatsapp" aria-hidden="true"></i> Send on WhatsApp</button><button class="btn btn-ink" type="submit" name="via" value="email"><i class="bi bi-envelope" aria-hidden="true"></i> Send by Email</button></div></div>
       </div>
       <div class="form-success" role="status" aria-live="polite"><i class="bi bi-check-circle-fill" aria-hidden="true"></i><div><strong>Thank you for your feedback.</strong> It will appear here once it has been reviewed.</div></div>
     </form>
@@ -259,7 +259,7 @@
                   <textarea class="form-control" id="pq-message" name="message" rows="3" placeholder="Tell us about your move or question" disabled></textarea>
                 </div>
               </div>
-              <button class="btn btn-mx w-100 mt-4" type="submit" id="pq-submit">Get my free quote <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              <div class="send-options mt-4"><button class="btn btn-wa" type="submit" name="via" value="whatsapp"><i class="bi bi-whatsapp" aria-hidden="true"></i> Send on WhatsApp</button><button class="btn btn-ink" type="submit" name="via" value="email"><i class="bi bi-envelope" aria-hidden="true"></i> Send by Email</button></div>
               <p class="form-note">By submitting, you agree to be contacted about your enquiry. See our <a href="privacy-policy.html">privacy policy</a>.</p>
               <div class="form-success" role="status" aria-live="polite"><i class="bi bi-check-circle-fill" aria-hidden="true"></i><div><strong>Thanks — we’ve got your details.</strong> A moving coordinator will call you shortly.</div></div>
             </form>

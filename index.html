@@ -85,23 +85,45 @@
 </section>
 
 <div class="container estimator-wrap">
-  <form class="estimator" id="homeEstimator" aria-label="Estimate your moving cost">
-    <div class="row g-3 align-items-end">
+  <form class="estimator home-quote js-enquiry" id="homeQuote" novalidate data-demo aria-labelledby="hq-title">
+    <div class="home-quote-head">
+      <h2 id="hq-title">Get a free moving quote</h2>
+      <p>Fill in your details and send them to us on WhatsApp or by email &mdash; whichever you prefer.</p>
+    </div>
+    <div class="row g-3">
       <div class="col-md-6 col-lg-3">
-        <label class="form-label" for="est-from">Moving from</label>
-        <input class="form-control" id="est-from" name="from" placeholder="City or PIN code" autocomplete="address-level2">
+        <label class="form-label" for="hq-from">Moving from</label>
+        <input class="form-control" id="hq-from" name="from" placeholder="City or PIN code" autocomplete="address-level2" required>
+        <div class="invalid-feedback">Enter a pickup city or PIN code.</div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <label class="form-label" for="est-to">Moving to</label>
-        <input class="form-control" id="est-to" name="to" placeholder="City or PIN code">
+        <label class="form-label" for="hq-to">Moving to</label>
+        <input class="form-control" id="hq-to" name="to" placeholder="City or PIN code" required>
+        <div class="invalid-feedback">Enter a destination city or PIN code.</div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <label class="form-label" for="est-service">Service</label>
-        <select class="form-select" id="est-service" name="service"><option value="">Select a service</option><option value="Home shifting">Home shifting</option><option value="Office relocation">Office relocation</option><option value="Industrial relocation">Industrial relocation</option><option value="Car &amp; bike transport">Car &amp; bike transport</option><option value="Car transportation">Car transportation</option><option value="Bike transportation">Bike transportation</option><option value="Packing &amp; unpacking">Packing &amp; unpacking</option><option value="Loading &amp; unloading">Loading &amp; unloading</option><option value="Warehousing &amp; storage">Warehousing &amp; storage</option><option value="Transfer bills &amp; documents">Transfer bills &amp; documents</option></select>
+        <label class="form-label" for="hq-service">Service</label>
+        <select class="form-select" id="hq-service" name="service" required><option value="">Select a service</option><option value="Home shifting">Home shifting</option><option value="Office relocation">Office relocation</option><option value="Industrial relocation">Industrial relocation</option><option value="Car &amp; bike transport">Car &amp; bike transport</option><option value="Car transportation">Car transportation</option><option value="Bike transportation">Bike transportation</option><option value="Packing &amp; unpacking">Packing &amp; unpacking</option><option value="Loading &amp; unloading">Loading &amp; unloading</option><option value="Warehousing &amp; storage">Warehousing &amp; storage</option><option value="Transfer bills &amp; documents">Transfer bills &amp; documents</option></select>
+        <div class="invalid-feedback">Choose a service.</div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <button class="btn btn-ink w-100" type="submit">Estimate moving cost <i class="bi bi-arrow-up-right" aria-hidden="true"></i></button>
+        <label class="form-label" for="hq-date">Move date</label>
+        <input class="form-control" type="date" id="hq-date" name="date">
       </div>
+      <div class="col-md-6 col-lg-3">
+        <label class="form-label" for="hq-name">Full name</label>
+        <input class="form-control" id="hq-name" name="name" placeholder="Your name" autocomplete="name" required>
+        <div class="invalid-feedback">Enter your name.</div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <label class="form-label" for="hq-mobile">Mobile number</label>
+        <div class="input-group has-validation">
+          <span class="input-group-text">+91</span>
+          <input class="form-control" type="tel" id="hq-mobile" name="mobile" placeholder="10-digit mobile" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" autocomplete="tel-national" required>
+          <div class="invalid-feedback">Enter a valid 10-digit mobile number.</div>
+        </div>
+      </div>
+      <div class="col-lg-6 d-flex align-items-end"><div class="send-options w-100"><button class="btn btn-wa" type="submit" name="via" value="whatsapp"><i class="bi bi-whatsapp" aria-hidden="true"></i> Send on WhatsApp</button><button class="btn btn-ink" type="submit" name="via" value="email"><i class="bi bi-envelope" aria-hidden="true"></i> Send by Email</button></div></div>
     </div>
   </form>
 </div>
@@ -334,7 +356,7 @@
                   <textarea class="form-control" id="pq-message" name="message" rows="3" placeholder="Tell us about your move or question" disabled></textarea>
                 </div>
               </div>
-              <button class="btn btn-mx w-100 mt-4" type="submit" id="pq-submit">Get my free quote <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              <div class="send-options mt-4"><button class="btn btn-wa" type="submit" name="via" value="whatsapp"><i class="bi bi-whatsapp" aria-hidden="true"></i> Send on WhatsApp</button><button class="btn btn-ink" type="submit" name="via" value="email"><i class="bi bi-envelope" aria-hidden="true"></i> Send by Email</button></div>
               <p class="form-note">By submitting, you agree to be contacted about your enquiry. See our <a href="privacy-policy.html">privacy policy</a>.</p>
               <div class="form-success" role="status" aria-live="polite"><i class="bi bi-check-circle-fill" aria-hidden="true"></i><div><strong>Thanks — we’ve got your details.</strong> A moving coordinator will call you shortly.</div></div>
             </form>

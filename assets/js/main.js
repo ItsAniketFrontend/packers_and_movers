@@ -41,21 +41,53 @@
     document.querySelectorAll('[name="' + key + '"]').forEach(function (el) { el.value = val; });
   });
 
-  /* ---------- Enquiry forms (quote / contact / feedback) ----------
-     These forms validate in the browser, then open thank-you.html.
-     A few details (name, route, service — never the phone number) are
-     kept in sessionStorage so the thank-you page can greet the visitor
-     and pre-fill the WhatsApp message.
-     To connect a form to your mail handler or CRM, set its `action`
-     (e.g. action="send-enquiry.php"), remove the data-demo attribute and
-     have the handler redirect to thank-you.html. */
+  /* ---------- Enquiry forms (quote / call back / contact / feedback) ----------
+     Every form has two send buttons: "Send on WhatsApp" and "Send by Email".
+     After the browser validates the form, the details are written into a
+     ready-to-send WhatsApp message or email to MOVEXA. The visitor only has
+     to tap Send in their own app. This page then moves to thank-you.html.
+     The message text is kept in sessionStorage (this browser tab only) so
+     the thank-you page can offer it again if the app didn't open. */
   var THANK_YOU_PAGE = 'thank-you.html';
+  var MX_WHATSAPP = '919649347222';
+  var MX_EMAIL = 'info@movexalogistics.in';
+  var TITLES = {
+    quote: 'Free quote request',
+    callback: 'Call back request',
+    contact: 'Website enquiry',
+    feedback: 'Customer feedback'
+  };
   var formType = function (form) {
     if (form.id === 'popupQuote') return form.classList.contains('is-callback') ? 'callback' : 'quote';
     if (form.id === 'enquiry') return 'contact';
     if (form.id === 'feedback') return 'feedback';
     return 'quote';
   };
+  var fmtDate = function (v) {
+    var d = new Date(v + 'T00:00:00');
+    return isNaN(d) ? v : d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  };
+  var waLink = function (text) { return 'https://wa.me/' + MX_WHATSAPP + '?text=' + encodeURIComponent(text); };
+  var mailLink = function (subject, text) {
+    return 'mailto:' + MX_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text);
+  };
+
+  // "Label: value" lines for every filled-in field (name and mobile first)
+  var formLines = function (form) {
+    var first = [], lines = [];
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || el.disabled || el.tagName === 'BUTTON' || el.type === 'hidden' || el.type === 'submit') return;
+      var v = (el.value || '').trim();
+      if (!v) return;
+      var lab = el.id ? form.querySelector('label[for="' + el.id + '"]') : null;
+      var label = el.name === 'message' ? 'Message' : (lab ? lab.textContent.trim() : el.name);
+      if (el.name === 'mobile') v = '+91 ' + v;
+      if (el.type === 'date') v = fmtDate(v);
+      (el.name === 'name' || el.name === 'mobile' ? first : lines).push(label + ': ' + v);
+    });
+    return first.concat(lines);
+  };
+
   document.querySelectorAll('form.js-enquiry').forEach(function (form) {
     form.addEventListener('submit', function (ev) {
       if (!form.checkValidity()) {
@@ -66,54 +98,55 @@
         if (firstInvalid) firstInvalid.focus();
         return;
       }
-      if (form.hasAttribute('data-demo')) {
-        ev.preventDefault();
-        var lead = { type: formType(form) };
-        ['name', 'from', 'to', 'service', 'date', 'topic', 'branch'].forEach(function (k) {
-          var el = form.querySelector('[name="' + k + '"]');
-          if (el && !el.disabled && el.value.trim()) lead[k] = el.value.trim();
-        });
-        try { sessionStorage.setItem('mx_lead', JSON.stringify(lead)); } catch (e) { /* storage unavailable */ }
-        var btn = form.querySelector('[type="submit"]');
-        if (btn) btn.disabled = true;
+      if (!form.hasAttribute('data-demo')) return;
+      ev.preventDefault();
+
+      var type = formType(form);
+      var via = ev.submitter && ev.submitter.value === 'email' ? 'email' : 'whatsapp';
+      var nameEl = form.querySelector('[name="name"]');
+      var subject = TITLES[type] + (nameEl && nameEl.value.trim() ? ' - ' + nameEl.value.trim() : '');
+      var text = ['Hi MOVEXA,', TITLES[type] + ' from the website:', ''].concat(formLines(form)).join('\n');
+
+      // Short summary for the thank-you page
+      var lead = { type: type, via: via, subject: subject, text: text };
+      ['from', 'to', 'service', 'date', 'topic', 'branch'].forEach(function (k) {
+        var el = form.querySelector('[name="' + k + '"]');
+        if (el && !el.disabled && el.value.trim()) lead[k] = el.value.trim();
+      });
+      try { sessionStorage.setItem('mx_lead', JSON.stringify(lead)); } catch (e) { /* storage unavailable */ }
+      form.querySelectorAll('[type="submit"]').forEach(function (b) { b.disabled = true; });
+
+      if (via === 'email') {
+        window.location.href = mailLink(subject, text);       // opens the email app
+        setTimeout(function () { window.location.href = THANK_YOU_PAGE; }, 800);
+      } else {
+        window.open(waLink(text), '_blank', 'noopener');     // opens WhatsApp
         window.location.href = THANK_YOU_PAGE;
       }
     });
   });
 
-  /* ---------- Thank-you page: personalise from the submitted form ---------- */
+  /* ---------- Thank-you page: wording for the form that was sent ---------- */
   var ty = document.getElementById('thankYou');
   if (ty) {
     var lead = null;
     try { lead = JSON.parse(sessionStorage.getItem('mx_lead') || 'null'); } catch (e) { lead = null; }
     if (lead) {
-      var COPY = {
-        quote: { emoji: '🎉', badge: 'Quote request received', what: 'a quote request',
-          lead: 'Your moving quote request is with the MOVEXA team. A moving coordinator will call you shortly to confirm the details and share your quote. 📞' },
-        callback: { emoji: '📞', badge: 'Call back requested', what: 'a call back request',
-          lead: 'We’ve got your number. A moving coordinator will call you back shortly — keep your phone handy! 📱' },
-        contact: { emoji: '📬', badge: 'Message received', what: 'an enquiry',
-          lead: 'Thanks for getting in touch. The right person from our team will get back to you shortly. 🙌' },
-        feedback: { emoji: '🙏', badge: 'Feedback received', what: 'feedback',
-          lead: 'Thanks for sharing your experience — it helps our crews make every move better. ❤️' }
-      };
-      var c = COPY[lead.type] || COPY.quote;
-      var first = (lead.name || '').split(/\s+/)[0];
+      var WHAT = { quote: 'quote request', callback: 'call back request', contact: 'message', feedback: 'feedback' };
+      var BADGE = { quote: 'Quote request', callback: 'Call back request', contact: 'Your message', feedback: 'Your feedback' };
+      var what = WHAT[lead.type] || WHAT.quote;
       var q = function (k) { return ty.querySelector('[data-ty="' + k + '"]'); };
-      q('emoji').textContent = c.emoji;
-      q('badge').textContent = c.badge;
-      q('title').textContent = first ? 'Thank you, ' + first + '!' : 'Thank you!';
-      q('lead').textContent = c.lead;
+      q('badge').textContent = (BADGE[lead.type] || BADGE.quote) + ' · Almost done';
+      q('lead').textContent = lead.via === 'email'
+        ? 'Your ' + what + ' is ready in your email app — just hit Send ✅ and our team will get back to you shortly. 📧'
+        : 'Your ' + what + ' is ready in WhatsApp — just tap Send ✅ and our team will get back to you shortly. 📞';
 
       // Short summary of what they sent
       var items = [];
       if (lead.from && lead.to) items.push('📍 ' + lead.from + ' → ' + lead.to);
       else if (lead.from) items.push('📍 From ' + lead.from);
       if (lead.service) items.push('🚚 ' + lead.service);
-      if (lead.date) {
-        var d = new Date(lead.date + 'T00:00:00');
-        items.push('📅 ' + (isNaN(d) ? lead.date : d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })));
-      }
+      if (lead.date) items.push('📅 ' + fmtDate(lead.date));
       if (lead.topic) items.push('💬 ' + lead.topic);
       if (lead.branch) items.push('🏢 ' + lead.branch);
       var list = q('summary');
@@ -122,25 +155,14 @@
         list.hidden = false;
       }
 
-      // Pre-filled WhatsApp message
-      var msg = ['Hi MOVEXA 👋', 'I’ve just sent ' + c.what + ' on your website.'];
-      if (lead.name) msg.push('Name: ' + lead.name);
-      if (lead.from && lead.to) msg.push('Moving: ' + lead.from + ' → ' + lead.to);
-      if (lead.service) msg.push('Service: ' + lead.service);
-      if (lead.date) msg.push('Move date: ' + lead.date);
-      var waUrl = 'https://wa.me/919649347222?text=' + encodeURIComponent(msg.join('\n'));
-      document.querySelectorAll('[data-ty="wa"]').forEach(function (a) { a.href = waUrl; });
+      // The same message again, in case the app didn't open
+      if (lead.text) {
+        document.querySelectorAll('[data-ty="wa"]').forEach(function (a) { a.href = waLink(lead.text); });
+        document.querySelectorAll('[data-ty="mail"]').forEach(function (a) { a.href = mailLink(lead.subject || 'Website enquiry', lead.text); });
+        var retry = q('retry');
+        if (retry) retry.hidden = false;
+      }
     }
-  }
-
-  /* ---------- Home estimator → calculator ---------- */
-  var estimator = document.getElementById('homeEstimator');
-  if (estimator) {
-    estimator.addEventListener('submit', function (ev) {
-      ev.preventDefault();
-      var q = new URLSearchParams(new FormData(estimator));
-      window.location.href = 'moving-cost-calculator.html?' + q.toString();
-    });
   }
 
   /* ---------- Moving cost calculator ----------
@@ -231,7 +253,6 @@
     var pTitle = document.getElementById('quoteModalTitle');
     var pSub = document.getElementById('quoteModalSub');
     var pEyebrow = document.getElementById('quoteModalEyebrow');
-    var pSubmit = document.getElementById('pq-submit');
     var pSource = document.getElementById('pq-source');
     var page = (location.pathname.split('/').pop() || 'index.html');
 
@@ -239,14 +260,12 @@
       quote: {
         eyebrow: 'Free quote · No obligation',
         title: 'Get a free moving quote',
-        sub: 'Share a few details and our team will call you back with a quote.',
-        submit: 'Get my free quote'
+        sub: 'Fill in a few details and send them to us on WhatsApp or by email.'
       },
       callback: {
         eyebrow: 'Talk to our team',
         title: 'Request a call back',
-        sub: 'Leave your number and a moving coordinator will call you.',
-        submit: 'Request a call back'
+        sub: 'Leave your number and send it on WhatsApp or by email — we’ll call you back.'
       }
     };
 
@@ -264,7 +283,6 @@
       pEyebrow.textContent = copy.eyebrow;
       pTitle.textContent = trigger && trigger.getAttribute('data-popup-title') || copy.title;
       pSub.textContent = copy.sub;
-      pSubmit.firstChild.nodeValue = copy.submit + ' ';
       pForm.classList.toggle('is-callback', isCallback);
       pForm.querySelectorAll('.quote-only input, .quote-only select').forEach(function (el) { el.disabled = isCallback; });
       pForm.querySelectorAll('.callback-only textarea').forEach(function (el) { el.disabled = !isCallback; });
@@ -357,33 +375,5 @@
       if (e.key === 'ArrowRight') show(current + 1);
     });
     show(0);
-  }
-
-  /* ---------- Service areas: location search ---------- */
-  var locForm = document.getElementById('locationSearch');
-  if (locForm) {
-    var cards = document.querySelectorAll('[data-keywords]');
-    var msg = document.getElementById('locationMsg');
-    locForm.addEventListener('submit', function (ev) {
-      ev.preventDefault();
-      var q = (locForm.querySelector('input').value || '').trim().toLowerCase();
-      var hits = 0;
-      cards.forEach(function (c) {
-        var match = !q || c.dataset.keywords.toLowerCase().indexOf(q) > -1;
-        c.classList.toggle('d-none', !match);
-        if (match) hits++;
-      });
-      msg.classList.toggle('d-none', hits > 0);
-      document.querySelectorAll('[data-region]').forEach(function (r) {
-        r.classList.toggle('d-none', !r.querySelector('[data-keywords]:not(.d-none)'));
-      });
-    });
-    locForm.querySelector('input').addEventListener('input', function (e) {
-      if (!e.target.value) {
-        cards.forEach(function (c) { c.classList.remove('d-none'); });
-        document.querySelectorAll('[data-region]').forEach(function (r) { r.classList.remove('d-none'); });
-        msg.classList.add('d-none');
-      }
-    });
   }
 })();
