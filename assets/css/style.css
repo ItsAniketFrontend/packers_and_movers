@@ -937,3 +937,36 @@ a.card-mx, .card-mx.is-link { color: inherit; text-decoration: none; }
 .qm-logo { height: 38px; }
 .footer-contact .addr > span { display: block; }
 .qm-aside::before { background: linear-gradient(180deg, rgba(17, 18, 20, .78) 0%, rgba(17, 18, 20, .35) 30%, rgba(17, 18, 20, .95) 100%); }
+
+/* =========================================================
+   Our own work: photo tiles, gallery cards, viewer, videos
+   ========================================================= */
+.work-tile { position: relative; display: block; border-radius: 12px; overflow: hidden; color: #fff; text-decoration: none; background: var(--mx-alt); }
+.work-tile img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; transition: transform .5s ease; }
+.work-tile:hover img { transform: scale(1.04); }
+.work-tile .cap {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 2.4rem .9rem .8rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, .78)); font-weight: 700; font-size: .88rem; line-height: 1.3;
+}
+.work-tile .cap small {
+  display: block; font-family: var(--font-mono); font-weight: 500; font-size: .66rem; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--mx-red-300); margin-bottom: .2rem;
+}
+.work-tile:focus-visible { outline: 3px solid rgba(223, 30, 38, .5); outline-offset: 3px; }
+.strip-img.tall img { aspect-ratio: 4 / 5; }
+.work-card .photo img { aspect-ratio: 4 / 5; }
+.work-card h3 { font-size: .98rem; }
+
+/* Viewer: show tall phone photos whole */
+.viewer-img { background: #0a0a0b; display: flex; align-items: center; justify-content: center; }
+.viewer-img img { aspect-ratio: auto; width: 100%; height: min(68vh, 560px); object-fit: contain; }
+@media (max-width: 767.98px) { .viewer-img img { height: min(60vh, 440px); } }
+
+/* Videos */
+.video-card { margin: 0; }
+.video-card video { width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 12px; background: #000; display: block; }
+.video-card figcaption { font-weight: 700; font-size: .9rem; margin-top: .65rem; color: var(--mx-ink); }
+
+/* Real (mostly portrait) photos: use 4:3 frames so less is cropped */
+.hero-media img { aspect-ratio: 4 / 3; }
+.photo-card .photo img, .branch-card .photo img { aspect-ratio: 4 / 3; }

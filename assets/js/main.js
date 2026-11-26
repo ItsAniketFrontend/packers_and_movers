@@ -287,7 +287,7 @@
       var img = el.querySelector('img');
       vImg.style.opacity = 0;
       setTimeout(function () {
-        vImg.src = img.getAttribute('src');
+        vImg.src = img.getAttribute('data-full') || img.getAttribute('src');
         vImg.alt = img.alt;
         vImg.style.opacity = 1;
       }, 120);
@@ -323,7 +323,7 @@
       if (e.key === 'ArrowLeft') show(current - 1);
       if (e.key === 'ArrowRight') show(current + 1);
     });
-    show(5);
+    show(0);
   }
 
   /* ---------- Service areas: location search ---------- */
