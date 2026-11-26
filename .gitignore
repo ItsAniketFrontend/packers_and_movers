@@ -1,0 +1,28 @@
+# ---------------------------------------------------------------
+# MOVEXA Logistics & Relocation website
+# Files below are not used by the live site, so they stay local.
+# ---------------------------------------------------------------
+
+# Design mockups and original/raw photos (optimised copies live in assets/images/photos)
+Desktop/
+WebP-2x/
+
+# Old logo (replaced by "Movexa Logistics Logo.png")
+website_logo.png
+
+# Archives / backups
+*.zip
+*.rar
+*.7z
+*.bak
+
+# OS files
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editor / tooling
+.vscode/
+.idea/
+*.log
+*.tmp
