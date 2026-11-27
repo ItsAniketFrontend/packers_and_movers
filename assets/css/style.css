@@ -1106,3 +1106,10 @@ a.card-mx, .card-mx.is-link { color: inherit; text-decoration: none; }
   --bs-btn-focus-shadow-rgb: 255, 255, 255;
 }
 .ty-retry { margin: 1rem 0 0; font-size: .88rem; color: var(--mx-on-dark); }
+
+/* Branches hero with the query form directly below it (client request) */
+.hero-team.has-quote { min-height: 600px; padding-bottom: 7rem; }
+.hero-team.has-quote .move-types { margin: .4rem 0 0; }
+@media (max-width: 991.98px) {
+  .hero-team.has-quote { min-height: 0; padding-bottom: 6.25rem; }
+}
